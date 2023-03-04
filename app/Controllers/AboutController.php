@@ -6,8 +6,7 @@ use App\Core\Controller;
 class AboutController extends Controller{
 	public function index(){
 
-		$this->data->title =  $this->lang->aboutpage_title;
-		
+		$this->data->title = _("About us");
 		$this->view->render('about', $this->data);
 	}
 }

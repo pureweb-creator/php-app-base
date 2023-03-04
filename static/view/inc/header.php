@@ -21,7 +21,7 @@
 		<?php foreach ($data->lang_list as $lang): ?>
 			<li><a href="<?= $data->home_url."/".$lang."/".$data->active ?>">
 				<?= $lang ?>
-				<?= $lang == $data->lang_code ? "Active" : ""; ?>
+				<?= $lang == $data->lang_code ? _("Active") : ""; ?>
 				</a>
 			</li>
 		<?php endforeach; ?>

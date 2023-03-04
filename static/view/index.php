@@ -1,12 +1,12 @@
 <?php include 'inc/header.php'; ?>
 
-<h1><?= $data->lang->homepage_title; ?></h1>
+<h1><?= _("Home"); ?></h1>
 
 <article>
 	<form action="" method="POST">
 		<input type="hidden" name="csrf" value="<?= $_SESSION['csrf_token'] ?>">
 		<input type="text" name="name" placeholder="Name">
-		<button type="submit">Send</button>
+		<button type="submit"><?= _("Send"); ?></button>
 	</form>
 
     <ul>

@@ -6,7 +6,7 @@ use App\Core\Controller;
 class ContactsController extends Controller{
 	public function index(){
 
-		$this->data->title = $this->lang->contactspage_title;
+		$this->data->title = _("Contact us");
 		
 		$this->view->render('contacts', $this->data);
 	}

@@ -25,7 +25,7 @@ class HomeController extends Controller{
 
         $users = $this->model->getAllUsers();
 
-		$this->data->title = $this->lang->homepage_title;
+		$this->data->title = _("Home");
         $this->data->users = $users;
 
 		$this->view->render('index', $this->data);
