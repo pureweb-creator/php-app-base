@@ -1,0 +1,86 @@
+version: '3.8'
+
+# Services
+services:
+
+  # NGINX Service
+  nginx-project-name:
+    image: nginx:latest
+    container_name: nginx-project-name
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./:/app
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./.docker/nginx/logs:/var/log/nginx
+    depends_on:
+      - php-project-name
+    networks:
+      - network-project-name
+
+  # PHP Service
+  php-project-name:
+    image: php-project-name
+    build:
+      context: ./
+      dockerfile: .docker/php/Dockerfile
+    working_dir: /app
+    container_name: php-project-name
+    volumes:
+      - ./:/app
+      - /app/vendor
+      - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      mysql-project-name:
+        condition: service_healthy
+    networks:
+      - network-project-name
+
+  # MySQL Service
+  mysql-project-name:
+    image: mysql:latest
+    restart: always
+    container_name: mysql-project-name
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+03:00']
+    volumes:
+      - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      retries: 10
+    networks:
+      network-project-name:
+        aliases:
+          - ${MYSQL_HOST_ALIAS}
+
+  # PhpMyAdmin Service
+  phpmyadmin-project-name:
+    image: phpmyadmin
+    container_name: phpmyadmin-project-name
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+    depends_on:
+      mysql-project-name:
+        condition: service_healthy
+    networks:
+      - network-project-name
+
+# Volumes
+volumes:
+  mysqldata:
+
+# Networks
+networks:
+  network-project-name:
+    name: network-project-name
+    driver: bridge

@@ -9,7 +9,7 @@ class UserModel extends Model
     public function example(): array
     {
         try {
-            $stmt = $this->pdo->query("SELECT email FROM user");
+            $stmt = $this->pdo->query("SELECT * FROM phinxlog");
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         } catch (\PDOException $e){
