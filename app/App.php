@@ -1,10 +1,12 @@
 <?php
 
+use App\Core\Router;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 
 require_once __DIR__."/Config/config.php";
+require_once __DIR__."/Config/routes.php";
 
 session_start();
 
@@ -21,7 +23,4 @@ $logger->pushHandler(new StreamHandler(__DIR__.'/../debug.log', Level::Warning))
 if (!isset($_SESSION['_token']))
     $_SESSION['_token'] = bin2hex(random_bytes(16));
 
-$view = new App\Core\View($logger);
-
-// Run Application
-App\Core\Router::run($view, $logger);
+Router::dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

@@ -4,21 +4,23 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use App\Core\Controller;
 use App\Core\View;
+use App\Services\Service;
 use Monolog\Logger;
 
 class HomeController extends Controller{
-    protected View $view;
-    protected UserModel $userModel;
 
-    public function __construct(View $view, Logger $logger)
+    public function __construct(protected View $view)
     {
+        echo 'hi';
         parent::__construct();
-        $this->userModel = new UserModel($logger);
-        $this->view = $view;
     }
 
-    public function index(): void
+    public function index(View $view, UserModel $user, Service $service): void
     {
-		echo $this->view->render('index.twig');
+        $this->data['user'] = $user->example();
+        echo $service->greetingTo('roman');
+
+		echo $view->render('index.twig', $this->data);
+        unset($_SESSION['error']);
 	}
 }
