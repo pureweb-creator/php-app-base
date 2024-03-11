@@ -8,19 +8,12 @@ use App\Services\Service;
 use Monolog\Logger;
 
 class HomeController extends Controller{
-
-    public function __construct(protected View $view)
-    {
-        echo 'hi';
-        parent::__construct();
-    }
-
-    public function index(View $view, UserModel $user, Service $service): void
+    public function index(UserModel $user, Service $service): void
     {
         $this->data['user'] = $user->example();
         echo $service->greetingTo('roman');
 
-		echo $view->render('index.twig', $this->data);
+		echo $this->view->render('index.twig', $this->data);
         unset($_SESSION['error']);
 	}
 }

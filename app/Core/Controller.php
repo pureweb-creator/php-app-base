@@ -9,7 +9,7 @@ abstract class Controller
 {
 	protected array $data;
 
-	public function __construct()
+	public function __construct(protected View $view)
     {
         $lang = match(@$_GET['lang']){
             'en'=>'en',
