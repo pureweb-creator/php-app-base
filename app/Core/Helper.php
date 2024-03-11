@@ -13,4 +13,9 @@ abstract class Helper
 
         $_SESSION['response'] = $response;
     }
+
+    public static function getLanguage($lang="ua")
+    {
+        return include $_SERVER['DOCUMENT_ROOT']."/static/lang/$lang.php";
+    }
 }
