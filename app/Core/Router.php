@@ -76,16 +76,17 @@ class Router
      */
     private static function invokeClassMethod($action): void
     {
-        list($actionClassName, $actionMethodName) = $action;
+        list($actionClass, $actionMethod) = $action;
 
-        if (!class_exists($actionClassName) || !method_exists($actionClassName, $actionMethodName))
+        if (!class_exists($actionClass) || !method_exists($actionClass, $actionMethod))
             throw new NotFoundException();
 
-        $actionClass = new \ReflectionClass($actionClassName);
-        $actionConstruct = $actionClass->getConstructor();
-        $actionConstructParams = self::getActionParams($actionConstruct);
-        $actionClassInstance = $actionClass->newInstanceArgs($actionConstructParams);
-        $actionMethod = $actionClass->getMethod($actionMethodName);
+        $actionClass = new \ReflectionClass($actionClass);
+        $actionClassConstructor = $actionClass->getConstructor();
+        $actionClassConstructorParams = self::getActionParams($actionClassConstructor);
+        $actionClassInstance = $actionClass->newInstanceArgs($actionClassConstructorParams);
+
+        $actionMethod = new \ReflectionMethod($actionClassInstance, $actionMethod);
         $actionMethodParams = self::getActionParams($actionMethod);
         $actionMethod->invokeArgs($actionClassInstance, $actionMethodParams);
     }
