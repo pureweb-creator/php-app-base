@@ -6,7 +6,8 @@
         "fakerphp/faker": "^1.21",
       "ext-pdo": "*",
         "vlucas/phpdotenv": "^5.5",
-        "twig/twig": "^3.7"
+        "twig/twig": "^3.7",
+      "ext-xdebug": "*"
     },
     "autoload": {
         "psr-4": {
